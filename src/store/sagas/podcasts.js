@@ -6,7 +6,7 @@ import PodcastsActions from '~/store/ducks/podcasts';
 export function* load() {
   try {
     const response = yield call(api.get, 'podcasts');
-    console.tron.log(response);
+
     yield put(PodcastsActions.loadSuccess(response.data));
   } catch (err) {
     yield put(PodcastsActions.loadFailure());
