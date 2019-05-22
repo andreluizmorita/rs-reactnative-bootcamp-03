@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "server": "json-server server.json -w -d 300",
     "test": "jest"
   },
   "dependencies": {
@@ -12,6 +13,7 @@
     "react": "16.8.3",
     "react-native": "0.59.8",
     "react-native-gesture-handler": "^1.2.1",
+    "react-native-iphone-x-helper": "^1.2.0",
     "react-navigation": "^3.11.0",
     "react-redux": "^7.0.3",
     "reactotron-react-native": "^3.5.2",
@@ -38,9 +40,9 @@
     "eslint-plugin-react-native": "^3.7.0",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.54.1",
-    "react-test-renderer": "16.8.3",
     "prettier": "^1.16.4",
-    "pretty-quick": "^1.10.0"
+    "pretty-quick": "^1.10.0",
+    "react-test-renderer": "16.8.3"
   },
   "jest": {
     "preset": "react-native"
