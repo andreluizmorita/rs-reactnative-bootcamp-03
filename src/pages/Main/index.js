@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PodcastsActions from '~/store/ducks/podcasts';
+
 import {
   Container, PodcastList, Podcast, PageTitle, Cover, Info, Title, Count,
 } from './styles';
 
-import podcasts from '~/data/podcasts';
-
 class Main extends Component {
+  componentDidMount() {
+    const { loadRequest } = this.props;
+
+    loadRequest();
+  }
+
   render() {
+    const { podcasts } = this.props;
+    console.tron.log(this.props);
     return (
       <Container>
         <PodcastList
@@ -28,4 +39,13 @@ class Main extends Component {
   }
 }
 
-export default Main;
+const mapStateToProps = state => ({
+  podcasts: state.podcasts.data,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(PodcastsActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Main);
