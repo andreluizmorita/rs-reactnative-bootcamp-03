@@ -4,13 +4,17 @@ import Main from '~/pages/Main';
 import Podcast from '~/pages/Podcast';
 
 const Routes = createAppContainer(
-  createSwitchNavigator({
-    Main,
-    Podcast
-  }, {
-    defaultNavigationOptions: {
-      header: null,
-    }
-  }));
+  createSwitchNavigator(
+    {
+      Main,
+      Podcast,
+    },
+    {
+      defaultNavigationOptions: {
+        header: null,
+      },
+    },
+  ),
+);
 
 export default Routes;
