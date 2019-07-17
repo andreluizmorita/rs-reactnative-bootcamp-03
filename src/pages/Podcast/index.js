@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-
+import { PropTypes } from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PlayerActions from '~/store/ducks/player';
 
 import {
   Container,
@@ -22,12 +26,18 @@ class Podcast extends Component {
 
   handleBack = () => {
     const { navigation } = this.props;
-    console.tron.log(navigation);
     navigation.goBack();
   };
 
+  handlePlayer = (episodeId) => {
+    const { setPodcastRequest, navigation } = this.props;
+    const podcast = navigation.getParam('podcast');
+
+    setPodcastRequest(podcast, episodeId);
+  };
+
   render() {
-    const { navigation } = this.props;
+    const { navigation, currentEpisode } = this.props;
     const podcast = navigation.getParam('podcast');
 
     return (
@@ -41,7 +51,7 @@ class Podcast extends Component {
               </BackButton>
               <Cover source={{ uri: podcast.cover }} />
               <PodcastTitle>{podcast.title}</PodcastTitle>
-              <PlayButton onPress={() => {}}>
+              <PlayButton onPress={() => this.handlePlayer()}>
                 <PlayButtonText>REPRODUZIR</PlayButtonText>
               </PlayButton>
             </PodcastDetails>
@@ -49,8 +59,10 @@ class Podcast extends Component {
           data={podcast.tracks}
           keyExtractor={episode => String(episode.id)}
           renderItem={({ item: episode }) => (
-            <Episode>
-              <Title>{episode.title}</Title>
+            <Episode onPress={() => this.handlePlayer(episode.id)}>
+              <Title active={currentEpisode && currentEpisode.id === episode.id}>
+                {episode.title}
+              </Title>
               <Author>{episode.artist}</Author>
             </Episode>
           )}
@@ -60,4 +72,23 @@ class Podcast extends Component {
   }
 }
 
-export default Podcast;
+Podcast.propTypes = {
+  setPodcastRequest: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+const mapStateToProps = state => ({
+  currentEpisode: state.player.podcast
+    ? state.player.podcast.tracks.find(episode => episode.id === state.player.current)
+    : null,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(PlayerActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Podcast);
