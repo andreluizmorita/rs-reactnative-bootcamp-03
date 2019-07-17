@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withNavigation } from 'react-navigation';
 import { PropTypes } from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -26,6 +27,7 @@ class Podcast extends Component {
 
   handleBack = () => {
     const { navigation } = this.props;
+    console.tron.log(navigation);
     navigation.goBack();
   };
 
@@ -46,7 +48,7 @@ class Podcast extends Component {
           ListHeaderComponent={() => (
             <PodcastDetails>
               <Background source={{ uri: podcast.cover }} blurRadius={5} />
-              <BackButton onPress={this.handleBack}>
+              <BackButton onPress={() => navigation.navigate('Main')}>
                 <Icon name="arrow-back" size={20} color="#FFF" />
               </BackButton>
               <Cover source={{ uri: podcast.cover }} />
@@ -91,4 +93,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(PlayerActions, dispatc
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Podcast);
+)(withNavigation(Podcast));
